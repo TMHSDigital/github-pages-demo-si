@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -49,9 +49,15 @@ const stylingOptions = [
   { value: "creative", label: "Creative", description: "Bold and artistic" }
 ]
 
-export function TemplateGenerator() {
+interface TemplateGeneratorProps {
+  initialTemplateType?: string
+  isOpen?: boolean
+  onClose?: () => void
+}
+
+export function TemplateGenerator({ initialTemplateType = "", isOpen = false, onClose }: TemplateGeneratorProps) {
   const [config, setConfig] = useKV<TemplateConfig>("template-config", {
-    type: "",
+    type: initialTemplateType,
     name: "",
     features: [],
     styling: ""
@@ -60,6 +66,15 @@ export function TemplateGenerator() {
   const [generatedCode, setGeneratedCode] = useState("")
   const [isEditing, setIsEditing] = useState(false)
   const [editedCode, setEditedCode] = useState("")
+
+  useEffect(() => {
+    if (initialTemplateType) {
+      setConfig((current) => ({
+        ...current,
+        type: initialTemplateType
+      }))
+    }
+  }, [initialTemplateType])
 
   const handleFeatureToggle = (featureId: string, checked: boolean) => {
     setConfig((current) => {
@@ -399,32 +414,324 @@ Return only the complete HTML code without any explanations or markdown formatti
             Custom Template Generator
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Create a personalized GitHub Pages template tailored to your needs. 
+            Create a personalized GitHub Pages template tailored to your needs.
             Configure features and get ready-to-deploy code.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {templateTypes.map((type) => (
-            <Card key={type.value} className="cursor-pointer hover:shadow-md transition-shadow">
-              <CardHeader>
-                <CardTitle className="text-lg">{type.label}</CardTitle>
-                <p className="text-sm text-muted-foreground">{type.description}</p>
-              </CardHeader>
-              <CardContent>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button 
-                      className="w-full"
-                      onClick={() => setConfig((current) => {
-                        const currentConfig = current || { type: "", name: "", features: [], styling: "" }
-                        return { ...currentConfig, type: type.value }
-                      })}
-                    >
-                      <MagicWand className="mr-2" size={16} />
-                      Customize Template
-                    </Button>
-                  </DialogTrigger>
+        {/* Standalone template generator for direct access */}
+        {!isOpen && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {templateTypes.slice(0, 3).map((type) => (
+              <Card key={type.value} className="cursor-pointer hover:shadow-md transition-shadow">
+                <CardHeader>
+                  <CardTitle className="text-lg">{type.label}</CardTitle>
+                  <p className="text-sm text-muted-foreground">{type.description}</p>
+                </CardHeader>
+                <CardContent>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium shadow-sm">
+                        <MagicWand className="mr-2" size={16} />
+                        Customize Template
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-2xl">
+                      <DialogHeader>
+                        <DialogTitle>Customize Your {type.label}</DialogTitle>
+                      </DialogHeader>
+                      <div className="grid gap-6 py-4">
+                        <div className="grid gap-2">
+                          <Label htmlFor="site-name">Site Name</Label>
+                          <Input
+                            id="site-name"
+                            placeholder="My Awesome Site"
+                            value={currentConfig.name}
+                            onChange={(e) => setConfig((current) => {
+                              const currentConfig = current || { type: "", name: "", features: [], styling: "" }
+                              return { ...currentConfig, name: e.target.value }
+                            })}
+                          />
+                        </div>
+
+                        <div className="grid gap-2">
+                          <Label>Styling Theme</Label>
+                          <Select
+                            value={currentConfig.styling}
+                            onValueChange={(value) => setConfig((current) => {
+                              const currentConfig = current || { type: "", name: "", features: [], styling: "" }
+                              return { ...currentConfig, styling: value }
+                            })}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Choose a style" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {stylingOptions.map((style) => (
+                                <SelectItem key={style.value} value={style.value}>
+                                  <div>
+                                    <div className="font-medium">{style.label}</div>
+                                    <div className="text-xs text-muted-foreground">{style.description}</div>
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="grid gap-3">
+                          <Label>Features</Label>
+                          <div className="grid grid-cols-1 gap-3">
+                            {availableFeatures.map((feature) => (
+                              <div key={feature.id} className="flex items-center space-x-3">
+                                <Checkbox
+                                  id={feature.id}
+                                  checked={currentConfig.features.includes(feature.id)}
+                                  onCheckedChange={(checked) => handleFeatureToggle(feature.id, !!checked)}
+                                />
+                                <div className="flex-1">
+                                  <Label htmlFor={feature.id} className="text-sm font-medium">
+                                    {feature.label}
+                                  </Label>
+                                  <p className="text-xs text-muted-foreground">{feature.description}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="flex gap-3">
+                          <Button
+                            onClick={generateTemplate}
+                            disabled={isGenerating || !currentConfig.type}
+                            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium shadow-sm"
+                          >
+                            {isGenerating ? "Generating..." : "Generate Template"}
+                          </Button>
+                          {generatedCode && (
+                            <>
+                              <Button variant="outline" onClick={toggleEditMode} title="Edit template code">
+                                <CodeIcon size={16} />
+                              </Button>
+                              <Button variant="outline" onClick={copyToClipboard} title="Copy to clipboard">
+                                <Copy size={16} />
+                              </Button>
+                              <Button variant="outline" onClick={downloadTemplate} title="Download as HTML file">
+                                <Download size={16} />
+                              </Button>
+                            </>
+                          )}
+                        </div>
+
+                        {generatedCode && (
+                          <div className="mt-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <Label>Template</Label>
+                              {isEditing && (
+                                <div className="flex gap-2">
+                                  <Button size="sm" variant="outline" onClick={saveEdits}>
+                                    Save
+                                  </Button>
+                                  <Button size="sm" variant="ghost" onClick={cancelEdits}>
+                                    Cancel
+                                  </Button>
+                                </div>
+                              )}
+                            </div>
+
+                            <Tabs defaultValue="preview" className="w-full">
+                              <TabsList className="grid w-full grid-cols-2">
+                                <TabsTrigger value="preview">
+                                  <Eye size={16} className="mr-1" />
+                                  Preview
+                                </TabsTrigger>
+                                <TabsTrigger value="code">
+                                  <CodeIcon size={16} className="mr-1" />
+                                  Code
+                                </TabsTrigger>
+                              </TabsList>
+
+                              <TabsContent value="preview" className="mt-4">
+                                {renderPreview()}
+                              </TabsContent>
+
+                              <TabsContent value="code" className="mt-4">
+                                {isEditing ? (
+                                  <textarea
+                                    value={editedCode}
+                                    onChange={(e) => setEditedCode(e.target.value)}
+                                    className="w-full h-96 p-4 bg-muted border rounded-md font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary"
+                                    placeholder="Edit your template code here..."
+                                  />
+                                ) : (
+                                  <pre className="p-4 bg-muted rounded-md overflow-auto max-h-96">
+                                    <code className="text-xs font-mono">
+                                      {generatedCode}
+                                    </code>
+                                  </pre>
+                                )}
+                              </TabsContent>
+                            </Tabs>
+                          </div>
+                        )}
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+
+        {/* Template generator dialog for demo showcase */}
+        {isOpen && (
+          <Dialog open={isOpen} onOpenChange={(open) => !open && onClose?.()}>
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle>Customize Your {templateTypes.find(t => t.value === initialTemplateType)?.label || 'Template'}</DialogTitle>
+              </DialogHeader>
+              <div className="grid gap-6 py-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="site-name">Site Name</Label>
+                  <Input
+                    id="site-name"
+                    placeholder="My Awesome Site"
+                    value={currentConfig.name}
+                    onChange={(e) => setConfig((current) => {
+                      const currentConfig = current || { type: "", name: "", features: [], styling: "" }
+                      return { ...currentConfig, name: e.target.value }
+                    })}
+                  />
+                </div>
+
+                <div className="grid gap-2">
+                  <Label>Styling Theme</Label>
+                  <Select
+                    value={currentConfig.styling}
+                    onValueChange={(value) => setConfig((current) => {
+                      const currentConfig = current || { type: "", name: "", features: [], styling: "" }
+                      return { ...currentConfig, styling: value }
+                    })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Choose a style" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {stylingOptions.map((style) => (
+                        <SelectItem key={style.value} value={style.value}>
+                          <div>
+                            <div className="font-medium">{style.label}</div>
+                            <div className="text-xs text-muted-foreground">{style.description}</div>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="grid gap-3">
+                  <Label>Features</Label>
+                  <div className="grid grid-cols-1 gap-3">
+                    {availableFeatures.map((feature) => (
+                      <div key={feature.id} className="flex items-center space-x-3">
+                        <Checkbox
+                          id={feature.id}
+                          checked={currentConfig.features.includes(feature.id)}
+                          onCheckedChange={(checked) => handleFeatureToggle(feature.id, !!checked)}
+                        />
+                        <div className="flex-1">
+                          <Label htmlFor={feature.id} className="text-sm font-medium">
+                            {feature.label}
+                          </Label>
+                          <p className="text-xs text-muted-foreground">{feature.description}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <Button
+                    onClick={generateTemplate}
+                    disabled={isGenerating || !currentConfig.type}
+                    className="flex-1"
+                  >
+                    {isGenerating ? "Generating..." : "Generate Template"}
+                  </Button>
+                  {generatedCode && (
+                    <>
+                      <Button variant="outline" onClick={toggleEditMode} title="Edit template code">
+                        <CodeIcon size={16} />
+                      </Button>
+                      <Button variant="outline" onClick={copyToClipboard} title="Copy to clipboard">
+                        <Copy size={16} />
+                      </Button>
+                      <Button variant="outline" onClick={downloadTemplate} title="Download as HTML file">
+                        <Download size={16} />
+                      </Button>
+                    </>
+                  )}
+                </div>
+
+                {generatedCode && (
+                  <div className="mt-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <Label>Template</Label>
+                      {isEditing && (
+                        <div className="flex gap-2">
+                          <Button size="sm" variant="outline" onClick={saveEdits}>
+                            Save
+                          </Button>
+                          <Button size="sm" variant="ghost" onClick={cancelEdits}>
+                            Cancel
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+
+                    <Tabs defaultValue="preview" className="w-full">
+                      <TabsList className="grid w-full grid-cols-2">
+                        <TabsTrigger value="preview">
+                          <Eye size={16} className="mr-1" />
+                          Preview
+                        </TabsTrigger>
+                        <TabsTrigger value="code">
+                          <CodeIcon size={16} className="mr-1" />
+                          Code
+                        </TabsTrigger>
+                      </TabsList>
+
+                      <TabsContent value="preview" className="mt-4">
+                        {renderPreview()}
+                      </TabsContent>
+
+                      <TabsContent value="code" className="mt-4">
+                        {isEditing ? (
+                          <textarea
+                            value={editedCode}
+                            onChange={(e) => setEditedCode(e.target.value)}
+                            className="w-full h-96 p-4 bg-muted border rounded-md font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary"
+                            placeholder="Edit your template code here..."
+                          />
+                        ) : (
+                          <pre className="p-4 bg-muted rounded-md overflow-auto max-h-96">
+                            <code className="text-xs font-mono">
+                              {generatedCode}
+                            </code>
+                          </pre>
+                        )}
+                      </TabsContent>
+                    </Tabs>
+                  </div>
+                )}
+              </div>
+            </DialogContent>
+          </Dialog>
+        )}
+      </div>
+    </section>
+  )
+}
                   <DialogContent className="max-w-2xl">
                     <DialogHeader>
                       <DialogTitle>Customize Your {type.label}</DialogTitle>

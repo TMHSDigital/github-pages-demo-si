@@ -70,7 +70,17 @@ const demoSites = [
   }
 ]
 
-export function DemoShowcase() {
+interface DemoShowcaseProps {
+  onTemplateSelect?: (templateType: string) => void
+}
+
+export function DemoShowcase({ onTemplateSelect }: DemoShowcaseProps) {
+  const handleGenerateTemplate = (templateType: string) => {
+    if (onTemplateSelect) {
+      onTemplateSelect(templateType)
+    }
+  }
+
   return (
     <section id="demos" className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
       <div className="container mx-auto">
@@ -135,7 +145,12 @@ export function DemoShowcase() {
                       ))}
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="default" className="flex-1">
+                      <Button
+                        size="sm"
+                        variant="default"
+                        className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium shadow-sm"
+                        onClick={() => handleGenerateTemplate(site.id)}
+                      >
                         <MagicWand size={14} className="mr-1" />
                         Generate Template
                       </Button>
@@ -188,7 +203,12 @@ export function DemoShowcase() {
                           ))}
                         </div>
                         <div className="flex gap-2">
-                          <Button size="sm" variant="default" className="flex-1">
+                          <Button
+                            size="sm"
+                            variant="default"
+                            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium shadow-sm"
+                            onClick={() => handleGenerateTemplate(site.id)}
+                          >
                             <MagicWand size={14} className="mr-1" />
                             Generate Template
                           </Button>

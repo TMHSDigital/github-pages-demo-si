@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { ThemeProvider } from "./components/ThemeProvider"
 import { Header } from "./components/Header"
@@ -27,6 +28,19 @@ function ErrorFallback({ error, resetErrorBoundary }: { error: Error, resetError
 }
 
 function App() {
+  const [selectedTemplateType, setSelectedTemplateType] = useState<string>("")
+  const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false)
+
+  const handleTemplateSelect = (templateType: string) => {
+    setSelectedTemplateType(templateType)
+    setIsTemplateDialogOpen(true)
+  }
+
+  const handleTemplateDialogClose = () => {
+    setIsTemplateDialogOpen(false)
+    setSelectedTemplateType("")
+  }
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <ThemeProvider>
@@ -37,10 +51,14 @@ function App() {
               <Hero />
             </ErrorBoundary>
             <ErrorBoundary fallback={<div className="py-16 text-center">Loading demo showcase...</div>}>
-              <DemoShowcase />
+              <DemoShowcase onTemplateSelect={handleTemplateSelect} />
             </ErrorBoundary>
             <ErrorBoundary fallback={<div className="py-16 text-center">Loading template generator...</div>}>
-              <TemplateGenerator />
+              <TemplateGenerator
+                initialTemplateType={selectedTemplateType}
+                isOpen={isTemplateDialogOpen}
+                onClose={handleTemplateDialogClose}
+              />
             </ErrorBoundary>
             <ErrorBoundary fallback={<div className="py-16 text-center">Loading setup guide...</div>}>
               <SetupGuide />
