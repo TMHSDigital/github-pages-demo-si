@@ -1,4 +1,5 @@
 import { ErrorBoundary } from 'react-error-boundary'
+import { ThemeProvider } from "./components/ThemeProvider"
 import { Header } from "./components/Header"
 import { Hero } from "./components/Hero"
 import { DemoShowcase } from "./components/DemoShowcase"
@@ -28,24 +29,26 @@ function ErrorFallback({ error, resetErrorBoundary }: { error: Error, resetError
 function App() {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main>
-          <ErrorBoundary fallback={<div className="py-16 text-center">Loading hero section...</div>}>
-            <Hero />
-          </ErrorBoundary>
-          <ErrorBoundary fallback={<div className="py-16 text-center">Loading demo showcase...</div>}>
-            <DemoShowcase />
-          </ErrorBoundary>
-          <ErrorBoundary fallback={<div className="py-16 text-center">Loading template generator...</div>}>
-            <TemplateGenerator />
-          </ErrorBoundary>  
-          <ErrorBoundary fallback={<div className="py-16 text-center">Loading setup guide...</div>}>
-            <SetupGuide />
-          </ErrorBoundary>
-        </main>
-        <Footer />
-      </div>
+      <ThemeProvider>
+        <div className="min-h-screen bg-background">
+          <Header />
+          <main>
+            <ErrorBoundary fallback={<div className="py-16 text-center">Loading hero section...</div>}>
+              <Hero />
+            </ErrorBoundary>
+            <ErrorBoundary fallback={<div className="py-16 text-center">Loading demo showcase...</div>}>
+              <DemoShowcase />
+            </ErrorBoundary>
+            <ErrorBoundary fallback={<div className="py-16 text-center">Loading template generator...</div>}>
+              <TemplateGenerator />
+            </ErrorBoundary>
+            <ErrorBoundary fallback={<div className="py-16 text-center">Loading setup guide...</div>}>
+              <SetupGuide />
+            </ErrorBoundary>
+          </main>
+          <Footer />
+        </div>
+      </ThemeProvider>
     </ErrorBoundary>
   )
 }
