@@ -19,9 +19,12 @@ interface TemplateConfig {
 
 const templateTypes = [
   { value: "portfolio", label: "Personal Portfolio", description: "Showcase your work and skills" },
-  { value: "blog", label: "Blog Site", description: "Share articles and thoughts" },
-  { value: "docs", label: "Documentation", description: "Project or API documentation" },
-  { value: "landing", label: "Landing Page", description: "Product or service landing page" }
+  { value: "blog", label: "Personal Blog", description: "Share articles and thoughts" },
+  { value: "docs", label: "API Documentation", description: "Technical API documentation" },
+  { value: "landing", label: "SaaS Landing", description: "Software as a Service landing page" },
+  { value: "ecommerce", label: "Online Store", description: "E-commerce product catalog" },
+  { value: "resume", label: "Interactive Resume", description: "Professional resume website" },
+  { value: "wiki", label: "Knowledge Base", description: "Organizational wiki site" }
 ]
 
 const availableFeatures = [
@@ -30,7 +33,12 @@ const availableFeatures = [
   { id: "contact-form", label: "Contact Form", description: "Contact form with validation" },
   { id: "analytics", label: "Google Analytics", description: "Built-in analytics tracking" },
   { id: "seo", label: "SEO Optimized", description: "Meta tags and structured data" },
-  { id: "blog-support", label: "Blog Support", description: "Markdown blog posts" }
+  { id: "blog-support", label: "Blog Support", description: "Markdown blog posts" },
+  { id: "ecommerce-features", label: "E-commerce Features", description: "Product catalog and shopping cart" },
+  { id: "api-integration", label: "API Integration", description: "REST API endpoints and documentation" },
+  { id: "search-functionality", label: "Search Functionality", description: "Site-wide search capability" },
+  { id: "user-authentication", label: "User Authentication", description: "Login and registration system" },
+  { id: "cms-integration", label: "CMS Integration", description: "Content management system" }
 ]
 
 const stylingOptions = [
@@ -194,8 +202,8 @@ Return only the complete HTML code without any explanations or markdown formatti
             <h1>${config.name || 'Welcome to My Site'}</h1>
             ${config.type === 'portfolio' ? '<p>Showcase your work and skills</p>' : ''}
             ${config.type === 'blog' ? '<p>Share your thoughts and ideas</p>' : ''}
-            ${config.type === 'docs' ? '<p>Project documentation and guides</p>' : ''}
-            ${config.type === 'landing' ? '<p>Introduce your product or service</p>' : ''}
+            ${config.type === 'docs' ? '<p>Technical API documentation and guides</p>' : ''}
+            ${config.type === 'landing' ? '<p>Introduce your SaaS platform</p>' : ''}
         </header>
 
         <main class="content">
@@ -239,11 +247,59 @@ Return only the complete HTML code without any explanations or markdown formatti
 
             ${config.type === 'landing' ? `
             <section style="text-align: center; padding: 2rem;">
-                <h2>Welcome to Our Product</h2>
+                <h2>Welcome to Our SaaS Platform</h2>
                 <p>Discover how our solution can help you achieve your goals.</p>
                 <button style="background: #3b82f6; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 0.5rem; cursor: pointer;">
                     Get Started
                 </button>
+            </section>` : ''}
+
+            ${config.type === 'ecommerce' ? `
+            <section>
+                <h2>Featured Products</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                    <div style="border: 1px solid #e5e7eb; padding: 1rem; border-radius: 0.5rem;">
+                        <h3>Product Name</h3>
+                        <p>$99.99</p>
+                        <button style="background: #10b981; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.25rem; cursor: pointer;">Add to Cart</button>
+                    </div>
+                    <div style="border: 1px solid #e5e7eb; padding: 1rem; border-radius: 0.5rem;">
+                        <h3>Another Product</h3>
+                        <p>$149.99</p>
+                        <button style="background: #10b981; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.25rem; cursor: pointer;">Add to Cart</button>
+                    </div>
+                </div>
+            </section>` : ''}
+
+            ${config.type === 'resume' ? `
+            <section>
+                <h2>Professional Experience</h2>
+                <div style="border: 1px solid #e5e7eb; padding: 1rem; margin-bottom: 1rem; border-radius: 0.5rem;">
+                    <h3>Senior Developer</h3>
+                    <p>Tech Company | 2020 - Present</p>
+                    <p>Job description and achievements...</p>
+                </div>
+                <div style="border: 1px solid #e5e7eb; padding: 1rem; margin-bottom: 1rem; border-radius: 0.5rem;">
+                    <h3>Full Stack Developer</h3>
+                    <p>Previous Company | 2018 - 2020</p>
+                    <p>Previous job description and achievements...</p>
+                </div>
+            </section>` : ''}
+
+            ${config.type === 'wiki' ? `
+            <section>
+                <h2>Knowledge Base</h2>
+                <nav>
+                    <ul style="list-style: none; padding: 0; display: flex; gap: 1rem; margin-bottom: 2rem;">
+                        <li><a href="#getting-started" style="color: #3b82f6; text-decoration: none;">Getting Started</a></li>
+                        <li><a href="#tutorials" style="color: #3b82f6; text-decoration: none;">Tutorials</a></li>
+                        <li><a href="#faq" style="color: #3b82f6; text-decoration: none;">FAQ</a></li>
+                    </ul>
+                </nav>
+                <article>
+                    <h3 id="getting-started">Getting Started</h3>
+                    <p>Welcome to our knowledge base. This guide will help you get started with our platform.</p>
+                </article>
             </section>` : ''}
 
             ${config.features.includes('contact-form') ? `

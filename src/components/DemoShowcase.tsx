@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowSquareOut, Code, User, Article, BookOpen, Rocket } from "@phosphor-icons/react"
+import { ArrowSquareOut, Code, User, Article, BookOpen, Rocket, ShoppingCart, FileText, Globe } from "@phosphor-icons/react"
 
 const demoSites = [
   {
@@ -44,6 +44,36 @@ const demoSites = [
     icon: <Rocket size={20} />,
     liveUrl: "https://vercel.com/",
     repoUrl: "https://github.com/vercel/vercel"
+  },
+  {
+    id: "ecommerce",
+    title: "Online Store",
+    description: "Sell products online with a modern e-commerce platform",
+    category: "E-commerce",
+    tags: ["Shopify", "Payment", "Inventory"],
+    icon: <ShoppingCart size={20} />,
+    liveUrl: "https://www.shopify.com/",
+    repoUrl: "https://github.com/Shopify/shopify"
+  },
+  {
+    id: "resume",
+    title: "Interactive Resume",
+    description: "Stand out with an interactive, modern resume website",
+    category: "Resume",
+    tags: ["Interactive", "Timeline", "Skills"],
+    icon: <FileText size={20} />,
+    liveUrl: "https://resume.io/",
+    repoUrl: "https://github.com/topics/resume"
+  },
+  {
+    id: "wiki",
+    title: "Knowledge Base",
+    description: "Create a comprehensive wiki for your organization or project",
+    category: "Wiki",
+    tags: ["Knowledge", "Collaboration", "Search"],
+    icon: <Globe size={20} />,
+    liveUrl: "https://www.mediawiki.org/",
+    repoUrl: "https://github.com/wikimedia/mediawiki"
   }
 ]
 
@@ -62,12 +92,15 @@ export function DemoShowcase() {
         </div>
 
         <Tabs defaultValue="all" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
+          <TabsList className="grid w-full grid-cols-8 mb-8">
             <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
             <TabsTrigger value="blog">Blog</TabsTrigger>
             <TabsTrigger value="docs">Docs</TabsTrigger>
             <TabsTrigger value="landing">Landing</TabsTrigger>
+            <TabsTrigger value="e-commerce">E-commerce</TabsTrigger>
+            <TabsTrigger value="resume">Resume</TabsTrigger>
+            <TabsTrigger value="wiki">Wiki</TabsTrigger>
           </TabsList>
 
           <TabsContent value="all">
@@ -118,11 +151,11 @@ export function DemoShowcase() {
             </div>
           </TabsContent>
 
-          {["portfolio", "blog", "docs", "landing"].map((category) => (
+          {["portfolio", "blog", "docs", "landing", "e-commerce", "resume", "wiki"].map((category) => (
             <TabsContent key={category} value={category}>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
                 {demoSites
-                  .filter((site) => site.category.toLowerCase() === category)
+                  .filter((site) => site.category.toLowerCase() === category.replace('-', ' '))
                   .map((site) => (
                     <Card key={site.id} className="group hover:shadow-lg transition-shadow duration-200">
                       <CardHeader className="pb-3">
