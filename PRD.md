@@ -13,11 +13,11 @@ A comprehensive demonstration and guide for creating GitHub Pages hosted website
 ## Essential Features
 
 ### Live Demo Showcase
-- **Functionality**: Interactive gallery of different GitHub Pages site types (portfolio, blog, documentation, landing pages, e-commerce, resumes, wikis)
-- **Purpose**: Inspire users by showing what's possible with GitHub Pages
+- **Functionality**: Interactive gallery of different GitHub Pages site types with inspirational examples and feature showcases
+- **Purpose**: Inspire users by showing what's possible with GitHub Pages and demonstrate template capabilities
 - **Trigger**: User lands on homepage or clicks "View Examples"
-- **Progression**: Browse categories → Select demo type → View live preview → Copy template code → Access GitHub repo
-- **Success criteria**: Users can see working examples and understand different use cases
+- **Progression**: Browse categories → View site type details → See key features → Generate custom template
+- **Success criteria**: Users understand different use cases and can generate appropriate templates
 
 ### Template Generator
 - **Functionality**: Interactive form to generate customized GitHub Pages templates with live code editing

@@ -28,14 +28,14 @@ This repository showcases how to:
 ## Features
 
 ### Interactive Demo Showcase
-Browse and explore 7 different website categories with real examples:
-- **Portfolio**: Personal and professional portfolio sites
-- **Blog**: Personal blogs and content publishing
-- **Documentation**: API docs and project documentation
-- **Landing Pages**: SaaS and product landing pages
-- **E-commerce**: Online stores and product catalogs
-- **Resume**: Interactive resume and CV websites
-- **Wiki**: Knowledge bases and organizational wikis
+Browse and explore 7 different website categories with inspirational examples:
+- **Portfolio**: Personal and professional portfolio sites with project galleries and skills sections
+- **Blog**: Personal blogs and content publishing with article archives and categories
+- **Documentation**: API docs and project documentation with endpoint listings and examples
+- **Landing Pages**: SaaS and product landing pages with feature showcases and pricing
+- **E-commerce**: Online stores and product catalogs with shopping carts and payments
+- **Resume**: Interactive resume and CV websites with timelines and downloadable PDFs
+- **Wiki**: Knowledge bases and organizational wikis with structured content and search
 
 ### Customizable Template Generator
 Generate production-ready HTML templates with:
