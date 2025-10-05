@@ -12,8 +12,8 @@ const demoSites = [
     category: "Portfolio",
     tags: ["React", "Responsive", "Modern"],
     icon: <User size={20} />,
-    liveUrl: "https://example-portfolio.github.io",
-    repoUrl: "https://github.com/example/portfolio"
+    liveUrl: "https://github.dev/octocat/Hello-World",
+    repoUrl: "https://github.com/octocat/Hello-World"
   },
   {
     id: "blog",
@@ -22,8 +22,8 @@ const demoSites = [
     category: "Blog", 
     tags: ["Jekyll", "SEO", "Fast"],
     icon: <Article size={20} />,
-    liveUrl: "https://example-blog.github.io",
-    repoUrl: "https://github.com/example/blog"
+    liveUrl: "https://pages.github.com/",
+    repoUrl: "https://github.com/github/pages.github.com"
   },
   {
     id: "docs",
@@ -32,8 +32,8 @@ const demoSites = [
     category: "Documentation",
     tags: ["VitePress", "Search", "Mobile"],
     icon: <BookOpen size={20} />,
-    liveUrl: "https://example-docs.github.io",
-    repoUrl: "https://github.com/example/docs"
+    liveUrl: "https://docs.github.com/",
+    repoUrl: "https://github.com/github/docs"
   },
   {
     id: "landing",
@@ -42,8 +42,8 @@ const demoSites = [
     category: "Landing",
     tags: ["HTML", "CSS", "Optimized"],
     icon: <Rocket size={20} />,
-    liveUrl: "https://example-landing.github.io",
-    repoUrl: "https://github.com/example/landing"
+    liveUrl: "https://github.com/features/actions",
+    repoUrl: "https://github.com/features/actions"
   }
 ]
 
@@ -99,13 +99,17 @@ export function DemoShowcase() {
                       ))}
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="default">
-                        <ArrowSquareOut size={14} className="mr-1" />
-                        Live Demo
+                      <Button size="sm" variant="default" asChild>
+                        <a href={site.liveUrl} target="_blank" rel="noopener noreferrer">
+                          <ArrowSquareOut size={14} className="mr-1" />
+                          Live Demo
+                        </a>
                       </Button>
-                      <Button size="sm" variant="outline">
-                        <Code size={14} className="mr-1" />
-                        View Code
+                      <Button size="sm" variant="outline" asChild>
+                        <a href={site.repoUrl} target="_blank" rel="noopener noreferrer">
+                          <Code size={14} className="mr-1" />
+                          View Code
+                        </a>
                       </Button>
                     </div>
                   </CardContent>
@@ -146,13 +150,17 @@ export function DemoShowcase() {
                           ))}
                         </div>
                         <div className="flex gap-2">
-                          <Button size="sm" variant="default">
-                            <ArrowSquareOut size={14} className="mr-1" />
-                            Live Demo
+                          <Button size="sm" variant="default" asChild>
+                            <a href={site.liveUrl} target="_blank" rel="noopener noreferrer">
+                              <ArrowSquareOut size={14} className="mr-1" />
+                              Live Demo
+                            </a>
                           </Button>
-                          <Button size="sm" variant="outline">
-                            <Code size={14} className="mr-1" />
-                            View Code
+                          <Button size="sm" variant="outline" asChild>
+                            <a href={site.repoUrl} target="_blank" rel="noopener noreferrer">
+                              <Code size={14} className="mr-1" />
+                              View Code
+                            </a>
                           </Button>
                         </div>
                       </CardContent>

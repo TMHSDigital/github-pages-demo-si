@@ -20,8 +20,8 @@ export function Header() {
             <a href="#guide" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
               Guide
             </a>
-            <Button size="sm" className="ml-4">
-              Get Started
+            <Button size="sm" className="ml-4" asChild>
+              <a href="#guide">Get Started</a>
             </Button>
           </nav>
         </div>

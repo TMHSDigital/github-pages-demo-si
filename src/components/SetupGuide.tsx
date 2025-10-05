@@ -139,9 +139,11 @@ export function SetupGuide() {
         </div>
 
         <div className="text-center mt-8">
-          <Button size="lg">
-            <GithubLogo className="mr-2" size={16} />
-            Start Your First Site
+          <Button size="lg" asChild>
+            <a href="https://github.com/new" target="_blank" rel="noopener noreferrer">
+              <GithubLogo className="mr-2" size={16} />
+              Start Your First Site
+            </a>
           </Button>
         </div>
       </div>

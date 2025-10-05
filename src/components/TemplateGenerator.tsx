@@ -10,6 +10,14 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Download, MagicWand, Copy } from "@phosphor-icons/react"
 import { useKV } from '@github/spark/hooks'
 
+// Spark runtime API declaration
+declare global {
+  const spark: {
+    llmPrompt: (strings: TemplateStringsArray, ...values: any[]) => string
+    llm: (prompt: string, modelName?: string, jsonMode?: boolean) => Promise<string>
+  }
+}
+
 interface TemplateConfig {
   type: string
   name: string
@@ -67,11 +75,36 @@ export function TemplateGenerator() {
     
     setIsGenerating(true)
     
-    // Simulate template generation
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    const template = `
-<!DOCTYPE html>
+    try {
+      // Use LLM to generate a more sophisticated template
+      const prompt = spark.llmPrompt`Generate a complete, production-ready HTML template for a ${config.type} website with the following specifications:
+
+Site Name: ${config.name || 'My GitHub Pages Site'}
+Type: ${config.type}
+Styling Theme: ${config.styling}
+Features: ${config.features.join(', ')}
+
+Requirements:
+- Complete HTML5 structure with proper semantic elements
+- Inline CSS with modern styling (flexbox/grid, clean typography, responsive design)
+- Include placeholder content appropriate for a ${config.type}
+- ${config.features.includes('responsive') ? 'Mobile-responsive design with media queries' : ''}
+- ${config.features.includes('dark-mode') ? 'CSS variables for dark mode support' : ''}
+- ${config.features.includes('contact-form') ? 'Working contact form with validation' : ''}
+- ${config.features.includes('seo') ? 'SEO meta tags and structured data' : ''}
+- ${config.features.includes('analytics') ? 'Google Analytics integration placeholder' : ''}
+- Clean, ${config.styling} design aesthetic
+- Production-ready code that can be deployed immediately to GitHub Pages
+
+Return only the complete HTML code without any explanations or markdown formatting.`
+
+      const generatedTemplate = await spark.llm(prompt, "gpt-4o-mini")
+      setGeneratedCode(generatedTemplate.trim())
+    } catch (error) {
+      console.error('Template generation failed:', error)
+      
+      // Fallback to basic template
+      const fallbackTemplate = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -95,21 +128,36 @@ export function TemplateGenerator() {
             <h1>${config.name || 'Welcome to My Site'}</h1>
         </header>
         <main>
-            ${config.type === 'portfolio' ? '<section>Portfolio content here...</section>' : ''}
-            ${config.type === 'blog' ? '<section>Blog posts here...</section>' : ''}
-            ${config.features.includes('contact-form') ? '<form>Contact form here...</form>' : ''}
+            ${config.type === 'portfolio' ? '<section><h2>My Work</h2><p>Portfolio content will go here...</p></section>' : ''}
+            ${config.type === 'blog' ? '<section><h2>Latest Posts</h2><p>Blog posts will go here...</p></section>' : ''}
+            ${config.type === 'docs' ? '<section><h2>Documentation</h2><p>Documentation content will go here...</p></section>' : ''}
+            ${config.type === 'landing' ? '<section><h2>Welcome</h2><p>Product information will go here...</p></section>' : ''}
+            ${config.features.includes('contact-form') ? '<section><h2>Contact</h2><form><input type="email" placeholder="Your email" required><textarea placeholder="Your message" required></textarea><button type="submit">Send</button></form></section>' : ''}
         </main>
     </div>
-    ${config.features.includes('analytics') ? '<script>/* Google Analytics code */</script>' : ''}
+    ${config.features.includes('analytics') ? '<script>/* Google Analytics code will go here */</script>' : ''}
 </body>
 </html>`
+      setGeneratedCode(fallbackTemplate)
+    }
     
-    setGeneratedCode(template.trim())
     setIsGenerating(false)
   }
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(generatedCode)
+  }
+
+  const downloadTemplate = () => {
+    const blob = new Blob([generatedCode], { type: 'text/html' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'index.html'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
   }
 
   const currentConfig = config || { type: "", name: "", features: [], styling: "" }
@@ -221,9 +269,14 @@ export function TemplateGenerator() {
                           {isGenerating ? "Generating..." : "Generate Template"}
                         </Button>
                         {generatedCode && (
-                          <Button variant="outline" onClick={copyToClipboard}>
-                            <Copy size={16} />
-                          </Button>
+                          <>
+                            <Button variant="outline" onClick={copyToClipboard} title="Copy to clipboard">
+                              <Copy size={16} />
+                            </Button>
+                            <Button variant="outline" onClick={downloadTemplate} title="Download as HTML file">
+                              <Download size={16} />
+                            </Button>
+                          </>
                         )}
                       </div>
 

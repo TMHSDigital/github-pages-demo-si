@@ -18,14 +18,18 @@ export function Hero() {
           Explore templates, learn best practices, and launch your project in minutes.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-          <Button size="lg" className="text-base px-8">
-            <Play className="mr-2" size={16} weight="fill" />
-            View Live Demos
+          <Button size="lg" className="text-base px-8" asChild>
+            <a href="#demos">
+              <Play className="mr-2" size={16} weight="fill" />
+              View Live Demos
+            </a>
           </Button>
-          <Button variant="outline" size="lg" className="text-base px-8">
-            <Code className="mr-2" size={16} />
-            Browse Templates
-            <ArrowRight className="ml-2" size={16} />
+          <Button variant="outline" size="lg" className="text-base px-8" asChild>
+            <a href="#templates">
+              <Code className="mr-2" size={16} />
+              Browse Templates
+              <ArrowRight className="ml-2" size={16} />
+            </a>
           </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
