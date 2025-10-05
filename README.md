@@ -1,8 +1,13 @@
-# 🚀 GitHub Pages Demo Repository
+# GitHub Pages Demo Repository
+
+[![Build Status](https://github.com/TMHSDigital/github-pages-demo-si/actions/workflows/deploy.yml/badge.svg)](https://github.com/TMHSDigital/github-pages-demo-si/actions/workflows/deploy.yml)
+[![Last Commit](https://img.shields.io/github/last-commit/TMHSDigital/github-pages-demo-si)](https://github.com/TMHSDigital/github-pages-demo-si/commits/main)
+[![License](https://img.shields.io/github/license/TMHSDigital/github-pages-demo-si)](https://github.com/TMHSDigital/github-pages-demo-si/blob/main/LICENSE)
+[![Repo Size](https://img.shields.io/github/repo-size/TMHSDigital/github-pages-demo-si)](https://github.com/TMHSDigital/github-pages-demo-si)
 
 A complete template and demonstration for deploying modern web applications to GitHub Pages using GitHub Actions.
 
-## ✨ What's This?
+## What's This?
 
 This repository showcases how to:
 - Build a modern React + Vite application
@@ -10,7 +15,7 @@ This repository showcases how to:
 - Set up a professional development workflow
 - Create beautiful, responsive web applications
 
-## 🏗️ Tech Stack
+## Tech Stack
 
 - **Framework**: React 19 with TypeScript
 - **Build Tool**: Vite
@@ -18,7 +23,7 @@ This repository showcases how to:
 - **Deployment**: GitHub Actions → GitHub Pages
 - **Icons**: Phosphor Icons
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Use This Template
 Click "Use this template" to create your own repository.
@@ -32,8 +37,8 @@ Click "Use this template" to create your own repository.
 ### 3. Local Development
 ```bash
 # Clone your repository
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-cd YOUR_REPO_NAME
+git clone https://github.com/TMHSDigital/github-pages-demo-si.git
+cd github-pages-demo-si
 
 # Install dependencies
 npm install
@@ -86,18 +91,18 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 ```
 
-## 🔧 GitHub Actions Workflow
+## GitHub Actions Workflow
 
 The deployment workflow (`.github/workflows/deploy.yml`) automatically:
 1. Installs Node.js and dependencies
-2. Builds the application with `npm run build`
+2. Builds the application with `npm run build:github`
 3. Deploys the `dist/` folder to GitHub Pages
 4. Runs on every push to `main` branch
 
-## 🌍 Live Demo
+## Live Demo
 
 Once deployed, your site will be available at:
-`https://YOUR_USERNAME.github.io/YOUR_REPO_NAME/`
+`https://TMHSDigital.github.io/github-pages-demo-si/`
 
 ## 🤝 Contributing
 
