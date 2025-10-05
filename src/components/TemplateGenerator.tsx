@@ -7,7 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Download, MagicWand, Copy } from "@phosphor-icons/react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Download, MagicWand, Copy, Eye, Code as CodeIcon } from "@phosphor-icons/react"
 import { useKV } from '@github/spark/hooks'
 
 interface TemplateConfig {
@@ -57,6 +58,8 @@ export function TemplateGenerator() {
   })
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedCode, setGeneratedCode] = useState("")
+  const [isEditing, setIsEditing] = useState(false)
+  const [editedCode, setEditedCode] = useState("")
 
   const handleFeatureToggle = (featureId: string, checked: boolean) => {
     setConfig((current) => {
@@ -99,7 +102,9 @@ Requirements:
 Return only the complete HTML code without any explanations or markdown formatting.`
 
       const generatedTemplate = await window.spark.llm(promptText, "gpt-4o-mini")
-      setGeneratedCode(generatedTemplate.trim())
+      const trimmedCode = generatedTemplate.trim()
+      setGeneratedCode(trimmedCode)
+      setEditedCode(trimmedCode)
     } catch (error) {
       console.error('LLM template generation failed:', error)
 
@@ -109,13 +114,16 @@ Return only the complete HTML code without any explanations or markdown formatti
         const simplePrompt = `Create a basic ${config.type} HTML template for "${config.name || 'My Site'}". Include ${config.styling} styling and these features: ${config.features.join(', ')}.`
 
         const fallbackTemplate = await window.spark.llm(simplePrompt, "gpt-3.5-turbo")
-        setGeneratedCode(fallbackTemplate.trim())
+        const trimmedFallback = fallbackTemplate.trim()
+        setGeneratedCode(trimmedFallback)
+        setEditedCode(trimmedFallback)
       } catch (secondError) {
         console.error('Fallback template generation also failed:', secondError)
 
         // Final fallback to static template
         const staticTemplate = generateStaticTemplate(config)
         setGeneratedCode(staticTemplate)
+        setEditedCode(staticTemplate)
       }
     }
 
@@ -333,19 +341,52 @@ Return only the complete HTML code without any explanations or markdown formatti
   }
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(generatedCode)
+    navigator.clipboard.writeText(isEditing ? editedCode : generatedCode)
   }
 
   const downloadTemplate = () => {
-    const blob = new Blob([generatedCode], { type: 'text/html' })
+    const blob = new Blob([isEditing ? editedCode : generatedCode], { type: 'text/html' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = 'index.html'
+    a.download = `${config?.name || 'template'}.html`
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
+  }
+
+  const toggleEditMode = () => {
+    if (!isEditing) {
+      setEditedCode(generatedCode)
+    }
+    setIsEditing(!isEditing)
+  }
+
+  const saveEdits = () => {
+    setGeneratedCode(editedCode)
+    setIsEditing(false)
+  }
+
+  const cancelEdits = () => {
+    setEditedCode(generatedCode)
+    setIsEditing(false)
+  }
+
+  const renderPreview = () => {
+    const codeToRender = isEditing ? editedCode : generatedCode
+    if (!codeToRender) return null
+
+    // Create a safe preview by extracting just the body content
+    const tempDiv = document.createElement('div')
+    tempDiv.innerHTML = codeToRender
+    const bodyContent = tempDiv.querySelector('body')
+
+    return (
+      <div className="border rounded-md p-4 bg-background min-h-[400px] overflow-auto">
+        <div dangerouslySetInnerHTML={{ __html: bodyContent?.innerHTML || codeToRender }} />
+      </div>
+    )
   }
 
   const currentConfig = config || { type: "", name: "", features: [], styling: "" }
@@ -449,8 +490,8 @@ Return only the complete HTML code without any explanations or markdown formatti
                       </div>
 
                       <div className="flex gap-3">
-                        <Button 
-                          onClick={generateTemplate} 
+                        <Button
+                          onClick={generateTemplate}
                           disabled={isGenerating || !currentConfig.type}
                           className="flex-1"
                         >
@@ -458,6 +499,9 @@ Return only the complete HTML code without any explanations or markdown formatti
                         </Button>
                         {generatedCode && (
                           <>
+                            <Button variant="outline" onClick={toggleEditMode} title="Edit template code">
+                              <CodeIcon size={16} />
+                            </Button>
                             <Button variant="outline" onClick={copyToClipboard} title="Copy to clipboard">
                               <Copy size={16} />
                             </Button>
@@ -470,12 +514,53 @@ Return only the complete HTML code without any explanations or markdown formatti
 
                       {generatedCode && (
                         <div className="mt-4">
-                          <Label>Generated Code</Label>
-                          <div className="mt-2 p-4 bg-muted rounded-md">
-                            <pre className="text-xs font-mono overflow-auto max-h-64">
-                              <code>{generatedCode}</code>
-                            </pre>
+                          <div className="flex items-center justify-between mb-2">
+                            <Label>Template</Label>
+                            {isEditing && (
+                              <div className="flex gap-2">
+                                <Button size="sm" variant="outline" onClick={saveEdits}>
+                                  Save
+                                </Button>
+                                <Button size="sm" variant="ghost" onClick={cancelEdits}>
+                                  Cancel
+                                </Button>
+                              </div>
+                            )}
                           </div>
+
+                          <Tabs defaultValue="preview" className="w-full">
+                            <TabsList className="grid w-full grid-cols-2">
+                              <TabsTrigger value="preview">
+                                <Eye size={16} className="mr-1" />
+                                Preview
+                              </TabsTrigger>
+                              <TabsTrigger value="code">
+                                <CodeIcon size={16} className="mr-1" />
+                                Code
+                              </TabsTrigger>
+                            </TabsList>
+
+                            <TabsContent value="preview" className="mt-4">
+                              {renderPreview()}
+                            </TabsContent>
+
+                            <TabsContent value="code" className="mt-4">
+                              {isEditing ? (
+                                <textarea
+                                  value={editedCode}
+                                  onChange={(e) => setEditedCode(e.target.value)}
+                                  className="w-full h-96 p-4 bg-muted border rounded-md font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary"
+                                  placeholder="Edit your template code here..."
+                                />
+                              ) : (
+                                <pre className="p-4 bg-muted rounded-md overflow-auto max-h-96">
+                                  <code className="text-xs font-mono">
+                                    {generatedCode}
+                                  </code>
+                                </pre>
+                              )}
+                            </TabsContent>
+                          </Tabs>
                         </div>
                       )}
                     </div>
