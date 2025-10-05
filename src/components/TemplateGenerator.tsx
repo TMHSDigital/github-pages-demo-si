@@ -10,14 +10,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Download, MagicWand, Copy } from "@phosphor-icons/react"
 import { useKV } from '@github/spark/hooks'
 
-// Spark runtime API declaration
-declare global {
-  const spark: {
-    llmPrompt: (strings: TemplateStringsArray, ...values: any[]) => string
-    llm: (prompt: string, modelName?: string, jsonMode?: boolean) => Promise<string>
-  }
-}
-
 interface TemplateConfig {
   type: string
   name: string
@@ -77,7 +69,7 @@ export function TemplateGenerator() {
     
     try {
       // Use LLM to generate a more sophisticated template
-      const prompt = spark.llmPrompt`Generate a complete, production-ready HTML template for a ${config.type} website with the following specifications:
+      const promptText = `Generate a complete, production-ready HTML template for a ${config.type} website with the following specifications:
 
 Site Name: ${config.name || 'My GitHub Pages Site'}
 Type: ${config.type}
@@ -98,7 +90,7 @@ Requirements:
 
 Return only the complete HTML code without any explanations or markdown formatting.`
 
-      const generatedTemplate = await spark.llm(prompt, "gpt-4o-mini")
+      const generatedTemplate = await window.spark.llm(promptText, "gpt-4o-mini")
       setGeneratedCode(generatedTemplate.trim())
     } catch (error) {
       console.error('Template generation failed:', error)

@@ -10,6 +10,8 @@ const projectRoot = process.env.PROJECT_ROOT || import.meta.dirname
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Configure base URL for GitHub Pages deployment
+  base: process.env.NODE_ENV === 'production' ? '/spark-template/' : '/',
   plugins: [
     react(),
     tailwindcss(),
@@ -22,4 +24,14 @@ export default defineConfig({
       '@': resolve(projectRoot, 'src')
     }
   },
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    // Ensure compatibility with GitHub Pages
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      }
+    }
+  }
 });
