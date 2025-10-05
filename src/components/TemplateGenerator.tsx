@@ -64,11 +64,11 @@ export function TemplateGenerator() {
 
   const generateTemplate = async () => {
     if (!config) return
-    
+
     setIsGenerating(true)
-    
+
     try {
-      // Use LLM to generate a more sophisticated template
+      // Try LLM generation first
       const promptText = `Generate a complete, production-ready HTML template for a ${config.type} website with the following specifications:
 
 Site Name: ${config.name || 'My GitHub Pages Site'}
@@ -93,47 +93,187 @@ Return only the complete HTML code without any explanations or markdown formatti
       const generatedTemplate = await window.spark.llm(promptText, "gpt-4o-mini")
       setGeneratedCode(generatedTemplate.trim())
     } catch (error) {
-      console.error('Template generation failed:', error)
-      
-      // Fallback to basic template
-      const fallbackTemplate = `<!DOCTYPE html>
+      console.error('LLM template generation failed:', error)
+
+      // Try a more conservative fallback with better error messaging
+      try {
+        // Attempt a simpler prompt in case the first one was too complex
+        const simplePrompt = `Create a basic ${config.type} HTML template for "${config.name || 'My Site'}". Include ${config.styling} styling and these features: ${config.features.join(', ')}.`
+
+        const fallbackTemplate = await window.spark.llm(simplePrompt, "gpt-3.5-turbo")
+        setGeneratedCode(fallbackTemplate.trim())
+      } catch (secondError) {
+        console.error('Fallback template generation also failed:', secondError)
+
+        // Final fallback to static template
+        const staticTemplate = generateStaticTemplate(config)
+        setGeneratedCode(staticTemplate)
+      }
+    }
+
+    setIsGenerating(false)
+  }
+
+  const generateStaticTemplate = (config: TemplateConfig) => {
+    return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${config.name || 'My GitHub Pages Site'}</title>
+    ${config.features.includes('seo') ? `<meta name="description" content="A ${config.type} website created with GitHub Pages">
+    <meta property="og:title" content="${config.name || 'My Site'}">
+    <meta property="og:description" content="A ${config.type} website created with GitHub Pages">` : ''}
     <style>
         /* ${config.styling} styling */
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            margin: 0; 
-            padding: 20px;
-            ${config.features.includes('dark-mode') ? 'background: var(--bg-color, #fff);' : 'background: #fff;'}
+        :root {
+            ${config.features.includes('dark-mode') ? '--bg-color: #ffffff; --text-color: #000000;' : ''}
         }
-        .container { max-width: 1200px; margin: 0 auto; }
-        ${config.features.includes('responsive') ? '@media (max-width: 768px) { .container { padding: 10px; } }' : ''}
+
+        .dark {
+            ${config.features.includes('dark-mode') ? '--bg-color: #1a1a1a; --text-color: #ffffff;' : ''}
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: var(--bg-color, #ffffff);
+            color: var(--text-color, #000000);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .content {
+            display: grid;
+            gap: 2rem;
+        }
+
+        ${config.features.includes('responsive') ? `
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            h1 { font-size: 2rem; }
+            .container { padding: 0 1rem; }
+        }` : ''}
+
+        ${config.features.includes('dark-mode') ? `
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            cursor: pointer;
+        }` : ''}
     </style>
 </head>
 <body>
+    ${config.features.includes('dark-mode') ? '<button class="theme-toggle" onclick="document.body.classList.toggle(\'dark\')">🌙</button>' : ''}
+
     <div class="container">
         <header>
             <h1>${config.name || 'Welcome to My Site'}</h1>
+            ${config.type === 'portfolio' ? '<p>Showcase your work and skills</p>' : ''}
+            ${config.type === 'blog' ? '<p>Share your thoughts and ideas</p>' : ''}
+            ${config.type === 'docs' ? '<p>Project documentation and guides</p>' : ''}
+            ${config.type === 'landing' ? '<p>Introduce your product or service</p>' : ''}
         </header>
-        <main>
-            ${config.type === 'portfolio' ? '<section><h2>My Work</h2><p>Portfolio content will go here...</p></section>' : ''}
-            ${config.type === 'blog' ? '<section><h2>Latest Posts</h2><p>Blog posts will go here...</p></section>' : ''}
-            ${config.type === 'docs' ? '<section><h2>Documentation</h2><p>Documentation content will go here...</p></section>' : ''}
-            ${config.type === 'landing' ? '<section><h2>Welcome</h2><p>Product information will go here...</p></section>' : ''}
-            ${config.features.includes('contact-form') ? '<section><h2>Contact</h2><form><input type="email" placeholder="Your email" required><textarea placeholder="Your message" required></textarea><button type="submit">Send</button></form></section>' : ''}
+
+        <main class="content">
+            ${config.type === 'portfolio' ? `
+            <section>
+                <h2>My Work</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                    <div style="border: 1px solid #e5e7eb; padding: 1rem; border-radius: 0.5rem;">
+                        <h3>Project 1</h3>
+                        <p>A brief description of your project...</p>
+                    </div>
+                    <div style="border: 1px solid #e5e7eb; padding: 1rem; border-radius: 0.5rem;">
+                        <h3>Project 2</h3>
+                        <p>Another project description...</p>
+                    </div>
+                </div>
+            </section>` : ''}
+
+            ${config.type === 'blog' ? `
+            <section>
+                <h2>Latest Posts</h2>
+                <article style="border: 1px solid #e5e7eb; padding: 1rem; margin-bottom: 1rem; border-radius: 0.5rem;">
+                    <h3>Blog Post Title</h3>
+                    <p class="text-muted">Posted on January 1, 2024</p>
+                    <p>A brief excerpt from your blog post...</p>
+                </article>
+            </section>` : ''}
+
+            ${config.type === 'docs' ? `
+            <section>
+                <h2>Getting Started</h2>
+                <p>Welcome to the project documentation. This guide will help you get started.</p>
+                <nav>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><a href="#installation">Installation</a></li>
+                        <li><a href="#usage">Usage</a></li>
+                        <li><a href="#api">API Reference</a></li>
+                    </ul>
+                </nav>
+            </section>` : ''}
+
+            ${config.type === 'landing' ? `
+            <section style="text-align: center; padding: 2rem;">
+                <h2>Welcome to Our Product</h2>
+                <p>Discover how our solution can help you achieve your goals.</p>
+                <button style="background: #3b82f6; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 0.5rem; cursor: pointer;">
+                    Get Started
+                </button>
+            </section>` : ''}
+
+            ${config.features.includes('contact-form') ? `
+            <section>
+                <h2>Contact Us</h2>
+                <form style="max-width: 500px; margin: 0 auto;">
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem;">Email:</label>
+                        <input type="email" required style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.25rem;">
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem;">Message:</label>
+                        <textarea required rows="4" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.25rem;"></textarea>
+                    </div>
+                    <button type="submit" style="background: #10b981; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 0.25rem; cursor: pointer;">
+                        Send Message
+                    </button>
+                </form>
+            </section>` : ''}
         </main>
     </div>
-    ${config.features.includes('analytics') ? '<script>/* Google Analytics code will go here */</script>' : ''}
+
+    ${config.features.includes('analytics') ? `
+    <!-- Google Analytics -->
+    <script>
+        // Google Analytics placeholder - replace with your tracking ID
+        console.log('Analytics tracking would go here');
+    </script>` : ''}
 </body>
 </html>`
-      setGeneratedCode(fallbackTemplate)
-    }
-    
-    setIsGenerating(false)
   }
 
   const copyToClipboard = () => {

@@ -12,18 +12,18 @@ const demoSites = [
     category: "Portfolio",
     tags: ["React", "Responsive", "Modern"],
     icon: <User size={20} />,
-    liveUrl: "https://github.dev/octocat/Hello-World",
-    repoUrl: "https://github.com/octocat/Hello-World"
+    liveUrl: "https://tailwindcss.com/",
+    repoUrl: "https://github.com/tailwindlabs/tailwindcss"
   },
   {
     id: "blog",
     title: "Tech Blog",
     description: "Share your thoughts and expertise with a clean, readable blog",
-    category: "Blog", 
+    category: "Blog",
     tags: ["Jekyll", "SEO", "Fast"],
     icon: <Article size={20} />,
-    liveUrl: "https://pages.github.com/",
-    repoUrl: "https://github.com/github/pages.github.com"
+    liveUrl: "https://jekyllrb.com/",
+    repoUrl: "https://github.com/jekyll/jekyll"
   },
   {
     id: "docs",
@@ -32,8 +32,8 @@ const demoSites = [
     category: "Documentation",
     tags: ["VitePress", "Search", "Mobile"],
     icon: <BookOpen size={20} />,
-    liveUrl: "https://docs.github.com/",
-    repoUrl: "https://github.com/github/docs"
+    liveUrl: "https://vitepress.dev/",
+    repoUrl: "https://github.com/vuejs/vitepress"
   },
   {
     id: "landing",
@@ -42,8 +42,8 @@ const demoSites = [
     category: "Landing",
     tags: ["HTML", "CSS", "Optimized"],
     icon: <Rocket size={20} />,
-    liveUrl: "https://github.com/features/actions",
-    repoUrl: "https://github.com/features/actions"
+    liveUrl: "https://vercel.com/",
+    repoUrl: "https://github.com/vercel/vercel"
   }
 ]
 

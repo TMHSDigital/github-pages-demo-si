@@ -22,20 +22,20 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-3">Resources</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground transition-colors">Templates</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">Examples</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">Documentation</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">Best Practices</a></li>
+              <li><a href="#templates" className="hover:text-foreground transition-colors">Templates</a></li>
+              <li><a href="#demos" className="hover:text-foreground transition-colors">Examples</a></li>
+              <li><a href="#guide" className="hover:text-foreground transition-colors">Documentation</a></li>
+              <li><a href="https://docs.github.com/en/pages" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">GitHub Pages Docs</a></li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="font-semibold mb-3">Community</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground transition-colors">GitHub Discussions</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">Contributing</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">Issues</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">Feature Requests</a></li>
+              <li><a href="https://github.com/TMHSDigital/github-pages-demo-si/discussions" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">GitHub Discussions</a></li>
+              <li><a href="https://github.com/TMHSDigital/github-pages-demo-si/blob/main/README.md" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Contributing</a></li>
+              <li><a href="https://github.com/TMHSDigital/github-pages-demo-si/issues" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Issues</a></li>
+              <li><a href="https://github.com/TMHSDigital/github-pages-demo-si/discussions/categories/feature-requests" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Feature Requests</a></li>
             </ul>
           </div>
         </div>
