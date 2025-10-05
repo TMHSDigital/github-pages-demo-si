@@ -2,78 +2,71 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowSquareOut, Code, User, Article, BookOpen, Rocket, ShoppingCart, FileText, Globe } from "@phosphor-icons/react"
+import { User, Article, BookOpen, Rocket, ShoppingCart, FileText, Globe, MagicWand } from "@phosphor-icons/react"
 
 const demoSites = [
   {
     id: "portfolio",
     title: "Personal Portfolio",
-    description: "Showcase your work and skills with a professional portfolio site",
+    description: "Showcase your work and skills with a professional portfolio site featuring project galleries, skills sections, and contact forms",
     category: "Portfolio",
     tags: ["React", "Responsive", "Modern"],
     icon: <User size={20} />,
-    liveUrl: "https://tailwindcss.com/",
-    repoUrl: "https://github.com/tailwindlabs/tailwindcss"
+    features: ["Project Gallery", "Skills Timeline", "Contact Form", "Responsive Design"]
   },
   {
     id: "blog",
-    title: "Tech Blog",
-    description: "Share your thoughts and expertise with a clean, readable blog",
+    title: "Personal Blog",
+    description: "Share your thoughts and expertise with a clean, readable blog featuring article listings, categories, and search functionality",
     category: "Blog",
-    tags: ["Jekyll", "SEO", "Fast"],
+    tags: ["Markdown", "SEO", "Categories"],
     icon: <Article size={20} />,
-    liveUrl: "https://jekyllrb.com/",
-    repoUrl: "https://github.com/jekyll/jekyll"
+    features: ["Article Archive", "Categories", "Search", "SEO Optimized"]
   },
   {
     id: "docs",
-    title: "Project Documentation",
-    description: "Create comprehensive documentation for your open source project",
+    title: "API Documentation",
+    description: "Create comprehensive technical documentation for your APIs with endpoint listings, examples, and interactive playgrounds",
     category: "Documentation",
-    tags: ["VitePress", "Search", "Mobile"],
+    tags: ["API Reference", "Interactive", "Examples"],
     icon: <BookOpen size={20} />,
-    liveUrl: "https://vitepress.dev/",
-    repoUrl: "https://github.com/vuejs/vitepress"
+    features: ["API Endpoints", "Code Examples", "Interactive Playground", "Version History"]
   },
   {
     id: "landing",
-    title: "Product Landing",
-    description: "Launch your product with a compelling landing page",
+    title: "SaaS Landing Page",
+    description: "Launch your SaaS product with a compelling landing page featuring feature highlights, pricing, and call-to-action sections",
     category: "Landing",
-    tags: ["HTML", "CSS", "Optimized"],
+    tags: ["Features", "Pricing", "CTA"],
     icon: <Rocket size={20} />,
-    liveUrl: "https://vercel.com/",
-    repoUrl: "https://github.com/vercel/vercel"
+    features: ["Feature Showcase", "Pricing Table", "Testimonials", "Newsletter Signup"]
   },
   {
     id: "ecommerce",
     title: "Online Store",
-    description: "Sell products online with a modern e-commerce platform",
+    description: "Sell products online with a modern e-commerce platform featuring product catalogs, shopping cart, and payment integration",
     category: "E-commerce",
-    tags: ["Shopify", "Payment", "Inventory"],
+    tags: ["Products", "Cart", "Payments"],
     icon: <ShoppingCart size={20} />,
-    liveUrl: "https://www.shopify.com/",
-    repoUrl: "https://github.com/Shopify/shopify"
+    features: ["Product Catalog", "Shopping Cart", "Payment Gateway", "Inventory Management"]
   },
   {
     id: "resume",
     title: "Interactive Resume",
-    description: "Stand out with an interactive, modern resume website",
+    description: "Stand out with an interactive resume website featuring timeline, skills visualization, and downloadable PDF options",
     category: "Resume",
-    tags: ["Interactive", "Timeline", "Skills"],
+    tags: ["Timeline", "Skills", "Downloadable"],
     icon: <FileText size={20} />,
-    liveUrl: "https://resume.io/",
-    repoUrl: "https://github.com/topics/resume"
+    features: ["Experience Timeline", "Skills Matrix", "Project Portfolio", "PDF Export"]
   },
   {
     id: "wiki",
     title: "Knowledge Base",
-    description: "Create a comprehensive wiki for your organization or project",
+    description: "Create a comprehensive wiki for your organization featuring structured content, search, and collaborative editing",
     category: "Wiki",
-    tags: ["Knowledge", "Collaboration", "Search"],
+    tags: ["Structured", "Search", "Collaborative"],
     icon: <Globe size={20} />,
-    liveUrl: "https://www.mediawiki.org/",
-    repoUrl: "https://github.com/wikimedia/mediawiki"
+    features: ["Content Hierarchy", "Full-Text Search", "Version Control", "User Permissions"]
   }
 ]
 
@@ -83,11 +76,11 @@ export function DemoShowcase() {
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            Live Examples
+            Site Type Examples
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            See what's possible with GitHub Pages. Each demo is a real, working website 
-            with source code you can examine and adapt.
+            Explore different types of websites you can create with GitHub Pages. Each example shows
+            the key features and structure you can generate with our template system.
           </p>
         </div>
 
@@ -124,6 +117,16 @@ export function DemoShowcase() {
                     <p className="text-sm text-muted-foreground mb-4">
                       {site.description}
                     </p>
+                    <div className="mb-4">
+                      <h4 className="text-sm font-medium mb-2 text-foreground">Key Features:</h4>
+                      <div className="flex flex-wrap gap-1">
+                        {site.features.map((feature) => (
+                          <Badge key={feature} variant="secondary" className="text-xs">
+                            {feature}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
                     <div className="flex flex-wrap gap-1 mb-4">
                       {site.tags.map((tag) => (
                         <Badge key={tag} variant="outline" className="text-xs">
@@ -132,17 +135,9 @@ export function DemoShowcase() {
                       ))}
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="default" asChild>
-                        <a href={site.liveUrl} target="_blank" rel="noopener noreferrer">
-                          <ArrowSquareOut size={14} className="mr-1" />
-                          Live Demo
-                        </a>
-                      </Button>
-                      <Button size="sm" variant="outline" asChild>
-                        <a href={site.repoUrl} target="_blank" rel="noopener noreferrer">
-                          <Code size={14} className="mr-1" />
-                          View Code
-                        </a>
+                      <Button size="sm" variant="default" className="flex-1">
+                        <MagicWand size={14} className="mr-1" />
+                        Generate Template
                       </Button>
                     </div>
                   </CardContent>
@@ -175,6 +170,16 @@ export function DemoShowcase() {
                         <p className="text-sm text-muted-foreground mb-4">
                           {site.description}
                         </p>
+                        <div className="mb-4">
+                          <h4 className="text-sm font-medium mb-2 text-foreground">Key Features:</h4>
+                          <div className="flex flex-wrap gap-1">
+                            {site.features.map((feature) => (
+                              <Badge key={feature} variant="secondary" className="text-xs">
+                                {feature}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
                         <div className="flex flex-wrap gap-1 mb-4">
                           {site.tags.map((tag) => (
                             <Badge key={tag} variant="outline" className="text-xs">
@@ -183,17 +188,9 @@ export function DemoShowcase() {
                           ))}
                         </div>
                         <div className="flex gap-2">
-                          <Button size="sm" variant="default" asChild>
-                            <a href={site.liveUrl} target="_blank" rel="noopener noreferrer">
-                              <ArrowSquareOut size={14} className="mr-1" />
-                              Live Demo
-                            </a>
-                          </Button>
-                          <Button size="sm" variant="outline" asChild>
-                            <a href={site.repoUrl} target="_blank" rel="noopener noreferrer">
-                              <Code size={14} className="mr-1" />
-                              View Code
-                            </a>
+                          <Button size="sm" variant="default" className="flex-1">
+                            <MagicWand size={14} className="mr-1" />
+                            Generate Template
                           </Button>
                         </div>
                       </CardContent>
