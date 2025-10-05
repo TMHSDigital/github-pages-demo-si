@@ -5,15 +5,17 @@
 [![License](https://img.shields.io/github/license/TMHSDigital/github-pages-demo-si)](https://github.com/TMHSDigital/github-pages-demo-si/blob/main/LICENSE)
 [![Repo Size](https://img.shields.io/github/repo-size/TMHSDigital/github-pages-demo-si)](https://github.com/TMHSDigital/github-pages-demo-si)
 
-A complete template and demonstration for deploying modern web applications to GitHub Pages using GitHub Actions.
+A comprehensive template and demonstration platform for deploying modern web applications to GitHub Pages using GitHub Actions. Features interactive demos, customizable templates, live code editing, and multiple theme options.
 
 ## What's This?
 
 This repository showcases how to:
-- Build a modern React + Vite application
+- Build a modern React + Vite application with TypeScript
 - Deploy automatically to GitHub Pages using GitHub Actions
+- Create interactive demos across multiple site categories
+- Generate customizable templates with live code editing
+- Implement comprehensive theming with multiple color schemes
 - Set up a professional development workflow
-- Create beautiful, responsive web applications
 
 ## Tech Stack
 
@@ -22,6 +24,39 @@ This repository showcases how to:
 - **Styling**: Tailwind CSS v4 + shadcn/ui components
 - **Deployment**: GitHub Actions → GitHub Pages
 - **Icons**: Phosphor Icons
+
+## Features
+
+### Interactive Demo Showcase
+Browse and explore 7 different website categories with real examples:
+- **Portfolio**: Personal and professional portfolio sites
+- **Blog**: Personal blogs and content publishing
+- **Documentation**: API docs and project documentation
+- **Landing Pages**: SaaS and product landing pages
+- **E-commerce**: Online stores and product catalogs
+- **Resume**: Interactive resume and CV websites
+- **Wiki**: Knowledge bases and organizational wikis
+
+### Customizable Template Generator
+Generate production-ready HTML templates with:
+- **7 Template Types**: Portfolio, blog, API docs, SaaS landing, e-commerce, resume, and wiki
+- **Interactive Code Editor**: Edit generated code with live preview
+- **Multiple Features**: Responsive design, dark mode, contact forms, SEO, analytics, and more
+- **Export Options**: Download templates or copy to clipboard
+
+### Comprehensive Theming
+Choose from 5 professionally designed color schemes:
+- **Light**: Clean and minimal design
+- **Dark**: Modern dark theme
+- **Blue**: Professional blue accent theme
+- **Green**: Nature-inspired green theme
+- **Purple**: Creative purple theme
+
+### Developer Experience
+- **GitHub Actions Integration**: Automated deployment on every push
+- **TypeScript Support**: Full type safety throughout the application
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
+- **Component Library**: shadcn/ui components for consistent UI
 
 ## Quick Start
 

@@ -20,11 +20,25 @@ A comprehensive demonstration and guide for creating GitHub Pages hosted website
 - **Success criteria**: Users can see working examples and understand different use cases
 
 ### Template Generator
-- **Functionality**: Interactive form to generate customized GitHub Pages templates
-- **Purpose**: Provide starting point tailored to user's specific needs
+- **Functionality**: Interactive form to generate customized GitHub Pages templates with live code editing
+- **Purpose**: Provide starting point tailored to user's specific needs with customization capabilities
 - **Trigger**: User clicks "Create Template" or "Get Started"
-- **Progression**: Select site type → Choose features → Configure options → Generate files → Download/copy code
-- **Success criteria**: Users get working template code ready for GitHub Pages deployment
+- **Progression**: Select site type → Choose features → Configure options → Generate files → Edit code live → Download/copy code
+- **Success criteria**: Users get working template code ready for GitHub Pages deployment with ability to customize
+
+### Interactive Code Editor
+- **Functionality**: Live code editing interface for generated templates with preview
+- **Purpose**: Allow users to customize generated templates before deployment
+- **Trigger**: User clicks edit button on generated template
+- **Progression**: View template → Edit code → Preview changes → Save modifications → Export final version
+- **Success criteria**: Users can modify and perfect templates for their specific needs
+
+### Theme System
+- **Functionality**: Multiple color scheme options with persistent user preferences
+- **Purpose**: Provide visual customization options for different user preferences
+- **Trigger**: User clicks theme switcher in navigation
+- **Progression**: Browse theme options → Select preferred theme → Apply changes → Persist selection
+- **Success criteria**: Users can customize visual appearance and maintain preferences across sessions
 
 ### Setup Guide
 - **Functionality**: Step-by-step tutorial for GitHub Pages deployment
@@ -79,9 +93,9 @@ Subtle, purposeful animations that enhance the developer experience - smooth tra
 - **Hierarchy of Movement**: Code previews and template generation get priority animation focus as core features
 
 ## Component Selection
-- **Components**: Cards for demo showcases, Tabs for code/preview switching, Dialog for template generation, Accordion for FAQ/troubleshooting, Button variants for different action types, Badge for tags/categories
-- **Customizations**: Custom syntax highlighter component, Template configurator with multi-step form
-- **States**: Buttons show loading states during generation, Cards have hover elevations, Code blocks have copy-success feedback
-- **Icon Selection**: GitHub, Code, Copy, Download, External Link, CheckCircle, AlertTriangle icons
-- **Spacing**: Consistent 4/8/16/24/32px spacing scale with generous whitespace around code blocks
-- **Mobile**: Responsive grid that stacks cards vertically, collapsible navigation, touch-optimized interactive elements
+- **Components**: Cards for demo showcases, Tabs for code/preview switching and category filtering, Dialog for template generation, Dropdown for theme selection, Accordion for FAQ/troubleshooting, Button variants for different action types, Badge for tags/categories
+- **Customizations**: Custom syntax highlighter component, Template configurator with multi-step form, Interactive code editor with live preview, Theme provider with CSS variable system
+- **States**: Buttons show loading states during generation, Cards have hover elevations, Code blocks have copy-success feedback, Theme switcher with visual previews
+- **Icon Selection**: GitHub, Code, Copy, Download, External Link, CheckCircle, AlertTriangle, Shopping Cart, File Text, Globe, Palette, Sun, Moon, Paint Bucket icons
+- **Spacing**: Consistent 4/8/16/24/32px spacing scale with generous whitespace around code blocks and editor interfaces
+- **Mobile**: Responsive grid that stacks cards vertically, collapsible navigation, touch-optimized interactive elements, mobile-friendly theme switcher
