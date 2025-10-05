@@ -2,17 +2,17 @@
 
 This document provides detailed guidance for deploying your application to GitHub Pages.
 
-## Prerequisites
+- A GitHub repos
 
 - A GitHub repository
 - GitHub Pages enabled in repository settings
-- The repository must be public (for free GitHub accounts)
+**Setup Steps:**
 
-## Deployment Methods
+4. Push to the `main`
 
-### Option 1: GitHub Actions (Recommended)
+- Project pages: `https://USERNAME.github.
 
-This repository is pre-configured with GitHub Actions for automatic deployment.
+If you prefer to deploy from a branch instead:
 
 **Setup Steps:**
 1. Go to your repository's **Settings** tab
@@ -30,38 +30,38 @@ If you prefer to deploy from a branch instead:
 
 1. Go to **Settings** > **Pages**
 2. Under **Source**, select **Deploy from a branch**
-3. Choose `main` branch and `/ (root)` folder
-4. Build your site locally with `npm run build`
-5. Commit the `dist/` folder to your repository
+- Verify all imported files exist and have co
+**Error: "Module not found"**
+- Ensure all components are exported properly
 
-## Configuration
 
-### Base URL Configuration
 
-The `vite.config.ts` file is configured to handle GitHub Pages paths automatically:
+- Verify the base URL in `
 
-```typescript
-base: process.env.NODE_ENV === 'production' ? '/REPO-NAME/' : '/',
-```
+- Clear your browser cache
 
-**Important:** Replace `/REPO-NAME/` with your actual repository name if different.
+**Assets not 
+- Check that the base URL configuration is correct
 
-### Custom Domain
 
-To use a custom domain:
+- Ensure the workflow file is in `.github/workflows/`
 
-1. Add a `CNAME` file to the `public/` directory with your domain
-2. Configure DNS records:
-   - For apex domains (example.com): Create A records pointing to GitHub's IPs
-   - For subdomains (www.example.com): Create a CNAME record pointing to your GitHub Pages URL
+**Permission erro
 
-## Troubleshooting
 
-### Build Failures
 
-**Error: "npm run build" fails**
-- Check that all dependencies are installed
-- Ensure TypeScript compilation succeeds locally
+- The build automatically splits code into chunks
+- Unused code is tree-sha
+### Loading Performance
+- Keep bundle sizes reasonable by code splitting
+
+
+
+
+
+
+
+
 - Verify all imported files exist and have correct casing
 
 **Error: "Module not found"**
@@ -127,8 +127,7 @@ To use a custom domain:
 
 4. **Environment Variables**: Only `VITE_` prefixed environment variables are available in the browser.
 
-## Need Help?
 
-- Check the [GitHub Pages documentation](https://docs.github.com/en/pages)
-- Review the [Actions tab](../../actions) for deployment logs
-- Look at similar repositories for configuration examples
+
+
+
